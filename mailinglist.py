@@ -4,16 +4,12 @@ from prettytable import PrettyTable
 import random
 
 def get_mailinglist_addresses():
-	#cmd = "list_lists"
-	#return subprocess.check_output(cmd, shell=True).split()
-	return ["a@waa", "b@waa", "c@waa", "d@waa"]
+	cmd = "/usr/local/mailman/bin/list_lists --bare"
+	return subprocess.check_output(cmd, shell=True).split()
 
 def get_members(address):
-	# cmd = "list_member " + address
-	# return subprocess.check_output(cmd, shell=True).split()
-	people = ["taro", "ziro", "sabro", "siro", "goro"]
-	random.shuffle(people)
-	return people[:3]
+	cmd = "/usr/local/mailman/bin/list_members " + address
+	return subprocess.check_output(cmd, shell=True).split()
 
 s = set()
 malinglists = {}
@@ -37,9 +33,6 @@ for h, address in enumerate(malinglists):
 	for member in malinglists[address]:
 		table[h][iallmember[member]] = True
 
-# HACK
-for row, address in zip(table, malinglists):
-	print row, address
 
 ptable = PrettyTable(['Malinglist'] + allmember)
 for row, address in zip(table, malinglists):
